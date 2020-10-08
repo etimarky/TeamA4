@@ -276,7 +276,7 @@ public abstract class Player extends GameObject {
     			momentumX = 0;
     			setX(0);
     		}
-    		else if (x > 1600) {
+    		else if (x > 1610) {
     			hasCollided = true;
     			momentumX = 0;
     			setX(0);
