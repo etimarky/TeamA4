@@ -18,10 +18,13 @@ public abstract class Player extends GameObject {
     protected float jumpHeight = 0;
     protected float jumpDegrade = 0;
     protected float terminalVelocityY = 0;
+    protected float terminalVelocityX = 0;
     protected float momentumYIncrease = 0;
+    protected float momentumXIncrease = 0;
 
     // values used to handle player movement
     protected float jumpForce = 0;
+    protected float momentumX = 0;
     protected float momentumY = 0;
     protected float moveAmountX, moveAmountY;
 
@@ -59,6 +62,7 @@ public abstract class Player extends GameObject {
     public void update() {
         moveAmountX = 0;
         moveAmountY = 0;
+        
 
         // if player is currently playing through level (has not won or lost)
         if (levelState == LevelState.RUNNING) {
@@ -249,6 +253,13 @@ public abstract class Player extends GameObject {
             momentumY = terminalVelocityY;
         }
     }
+    
+    protected void increaseMomentumX() {
+        momentumX += momentumXIncrease;
+        if (momentumX > terminalVelocityX) {
+            momentumX = terminalVelocityX;
+        }
+    }
 
     protected void updateLockedKeys() {
         if (Keyboard.isKeyUp(JUMP_KEY)) {
@@ -258,9 +269,20 @@ public abstract class Player extends GameObject {
 
     @Override
     public void onEndCollisionCheckX(boolean hasCollided, Direction direction) {
-
-    }
-
+    	if (direction == Direction.LEFT || direction == Direction.RIGHT) {
+    		if (x < 0) {
+    			hasCollided = true;
+    			momentumX = 0;
+    			setX(0);
+    		}
+    		else if (x > 1600) {
+    			hasCollided = true;
+    			momentumX = 0;
+    			setX(0);
+    		}
+    	}
+    }	
+	
     @Override
     public void onEndCollisionCheckY(boolean hasCollided, Direction direction) {
         // if player collides with a map tile below it, it is now on the ground
