@@ -17,14 +17,18 @@ public abstract class Player extends GameObject {
     protected float gravity = 0;
     protected float jumpHeight = 0;
     protected float jumpDegrade = 0;
-    protected float terminalVelocityY = 0;
     protected float terminalVelocityX = 0;
-    protected float momentumYIncrease = 0;
+    
     protected float momentumXIncrease = 0;
 
     // values used to handle player movement
     protected float jumpForce = 0;
     protected float momentumX = 0;
+    protected float terminalVelocityY = 0;
+    protected float momentumYIncrease = 0;
+
+    // values used to handle player movement
+
     protected float momentumY = 0;
     protected float moveAmountX, moveAmountY;
 
@@ -45,6 +49,11 @@ public abstract class Player extends GameObject {
     protected Key MOVE_LEFT_KEY = Key.LEFT;
     protected Key MOVE_RIGHT_KEY = Key.RIGHT;
     protected Key CROUCH_KEY = Key.DOWN;
+    protected Key rightKey = Key.D;
+    protected Key leftKey = Key.A;
+    protected Key upKey = Key.W;
+    protected Key downKey = Key.S;
+    protected Key spaceKey = Key.SPACE;
 
     // if true, player cannot be hurt by enemies (good for testing)
     protected boolean isInvincible = false;
@@ -62,7 +71,6 @@ public abstract class Player extends GameObject {
     public void update() {
         moveAmountX = 0;
         moveAmountY = 0;
-        
 
         // if player is currently playing through level (has not won or lost)
         if (levelState == LevelState.RUNNING) {
@@ -126,18 +134,20 @@ public abstract class Player extends GameObject {
         currentAnimationName = facingDirection == Direction.RIGHT ? "STAND_RIGHT" : "STAND_LEFT";
 
         // if walk left or walk right key is pressed, player enters WALKING state
-        if (Keyboard.isKeyDown(MOVE_LEFT_KEY) || Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
+        if (Keyboard.isKeyDown(MOVE_LEFT_KEY) || Keyboard.isKeyDown(MOVE_RIGHT_KEY) || Keyboard.isKeyDown(rightKey) || Keyboard.isKeyDown(leftKey)) {
             playerState = PlayerState.WALKING;
         }
 
         // if jump key is pressed, player enters JUMPING state
-        else if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
+        else if ((Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) || (Keyboard.isKeyDown(upKey) && !keyLocker.isKeyLocked(upKey)) || (Keyboard.isKeyDown(spaceKey) && !keyLocker.isKeyLocked(spaceKey))) {
             keyLocker.lockKey(JUMP_KEY);
+            keyLocker.lockKey(upKey);
+            keyLocker.lockKey(spaceKey);
             playerState = PlayerState.JUMPING;
         }
 
         // if crouch key is pressed, player enters CROUCHING state
-        else if (Keyboard.isKeyDown(CROUCH_KEY)) {
+        else if (Keyboard.isKeyDown(CROUCH_KEY) || Keyboard.isKeyDown(downKey)) {
             playerState = PlayerState.CROUCHING;
         }
     }
@@ -148,27 +158,29 @@ public abstract class Player extends GameObject {
         currentAnimationName = facingDirection == Direction.RIGHT ? "WALK_RIGHT" : "WALK_LEFT";
 
         // if walk left key is pressed, move player to the left
-        if (Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
+        if (Keyboard.isKeyDown(MOVE_LEFT_KEY) || Keyboard.isKeyDown(leftKey)) {
             moveAmountX -= walkSpeed;
             facingDirection = Direction.LEFT;
         }
 
         // if walk right key is pressed, move player to the right
-        else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
+        else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY) || Keyboard.isKeyDown(rightKey)) {
             moveAmountX += walkSpeed;
             facingDirection = Direction.RIGHT;
-        } else if (Keyboard.isKeyUp(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY)) {
+        } else if (Keyboard.isKeyUp(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY) && Keyboard.isKeyUp(rightKey) && Keyboard.isKeyUp(leftKey)) {
             playerState = PlayerState.STANDING;
         }
 
         // if jump key is pressed, player enters JUMPING state
-        if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
+        if ((Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) || (Keyboard.isKeyDown(upKey) && !keyLocker.isKeyLocked(upKey)) || (Keyboard.isKeyDown(spaceKey) && !keyLocker.isKeyLocked(spaceKey))) {
             keyLocker.lockKey(JUMP_KEY);
+            keyLocker.lockKey(upKey);
+            keyLocker.lockKey(spaceKey);
             playerState = PlayerState.JUMPING;
         }
 
         // if crouch key is pressed,
-        else if (Keyboard.isKeyDown(CROUCH_KEY)) {
+        else if (Keyboard.isKeyDown(CROUCH_KEY) || Keyboard.isKeyDown(downKey)) {
             playerState = PlayerState.CROUCHING;
         }
     }
@@ -179,13 +191,15 @@ public abstract class Player extends GameObject {
         currentAnimationName = facingDirection == Direction.RIGHT ? "CROUCH_RIGHT" : "CROUCH_LEFT";
 
         // if crouch key is released, player enters STANDING state
-        if (Keyboard.isKeyUp(CROUCH_KEY)) {
+        if (Keyboard.isKeyUp(CROUCH_KEY) && Keyboard.isKeyUp(downKey)) {
             playerState = PlayerState.STANDING;
         }
 
         // if jump key is pressed, player enters JUMPING state
-        if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
+        if ((Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) || (Keyboard.isKeyDown(upKey) && !keyLocker.isKeyLocked(upKey)) || (Keyboard.isKeyDown(spaceKey) && !keyLocker.isKeyLocked(spaceKey))) {
             keyLocker.lockKey(JUMP_KEY);
+            keyLocker.lockKey(upKey);
+            keyLocker.lockKey(spaceKey);
             playerState = PlayerState.JUMPING;
         }
     }
@@ -228,9 +242,9 @@ public abstract class Player extends GameObject {
             }
 
             // allows you to move left and right while in the air
-            if (Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
+            if (Keyboard.isKeyDown(MOVE_LEFT_KEY) || Keyboard.isKeyDown(leftKey)) {
                 moveAmountX -= walkSpeed;
-            } else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
+            } else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY) || Keyboard.isKeyDown(rightKey)) {
                 moveAmountX += walkSpeed;
             }
 
@@ -253,7 +267,7 @@ public abstract class Player extends GameObject {
             momentumY = terminalVelocityY;
         }
     }
-    
+
     protected void increaseMomentumX() {
         momentumX += momentumXIncrease;
         if (momentumX > terminalVelocityX) {
@@ -262,8 +276,10 @@ public abstract class Player extends GameObject {
     }
 
     protected void updateLockedKeys() {
-        if (Keyboard.isKeyUp(JUMP_KEY)) {
+        if (Keyboard.isKeyUp(JUMP_KEY) && Keyboard.isKeyUp(upKey) && Keyboard.isKeyUp(spaceKey)) {
             keyLocker.unlockKey(JUMP_KEY);
+            keyLocker.unlockKey(upKey);
+            keyLocker.unlockKey(spaceKey);
         }
     }
 
@@ -283,8 +299,8 @@ public abstract class Player extends GameObject {
     			setY(0);
     		}
     	}
-    }	
-	
+    }
+
     @Override
     public void onEndCollisionCheckY(boolean hasCollided, Direction direction) {
         // if player collides with a map tile below it, it is now on the ground

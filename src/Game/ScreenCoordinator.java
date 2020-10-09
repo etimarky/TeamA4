@@ -1,11 +1,13 @@
 package Game;
 
 import Engine.DefaultScreen;
+
 import Engine.GraphicsHandler;
 import Engine.Screen;
 import Screens.CreditsScreen;
 import Screens.MenuScreen;
 import Screens.PlayLevelScreen;
+import Screens.InstructionsScreen;
 
 /*
  * Based on the current game state, this class determines which Screen should be shown
@@ -19,7 +21,7 @@ public class ScreenCoordinator extends Screen {
 	protected GameState gameState;
 	protected GameState previousGameState;
 
-	public GameState getGameState() {
+	public  GameState getGameState() {
 		return gameState;
 	}
 
@@ -50,6 +52,9 @@ public class ScreenCoordinator extends Screen {
 					case CREDITS:
 						currentScreen = new CreditsScreen(this);
 						break;
+					case INSTRUCTIONS:
+						currentScreen = new InstructionsScreen(this);
+					
 				}
 				currentScreen.initialize();
 			}

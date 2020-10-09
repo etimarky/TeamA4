@@ -1,6 +1,7 @@
 package Screens;
 
 import Engine.GraphicsHandler;
+
 import Engine.Screen;
 import Game.GameState;
 import Game.ScreenCoordinator;
@@ -20,7 +21,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     protected Stopwatch screenTimer = new Stopwatch();
     protected LevelClearedScreen levelClearedScreen;
     protected LevelLoseScreen levelLoseScreen;
-
+  
     public PlayLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
@@ -70,6 +71,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             case LEVEL_LOSE_MESSAGE:
                 levelLoseScreen.update();
                 break;
+                
+     
         }
     }
 
@@ -88,6 +91,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             case LEVEL_LOSE_MESSAGE:
                 levelLoseScreen.draw(graphicsHandler);
                 break;
+            
         }
     }
 
@@ -104,7 +108,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     public void onDeath() {
         playLevelScreenState = PlayLevelScreenState.PLAYER_DEAD;
     }
-
+    
+    
     public void resetLevel() {
         initialize();
     }
