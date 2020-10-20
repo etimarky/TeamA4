@@ -3,6 +3,7 @@ package Level;
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
+import Game.GameState;
 import GameObject.GameObject;
 import GameObject.SpriteSheet;
 import Utils.AirGroundState;
@@ -33,6 +34,7 @@ public abstract class Player extends GameObject {
     protected float moveAmountX, moveAmountY;
 
     // values used to keep track of player's current state
+    protected GameState levelTwo;
     protected PlayerState playerState;
     protected PlayerState previousPlayerState;
     protected Direction facingDirection;
@@ -336,6 +338,7 @@ public abstract class Player extends GameObject {
     // other entities can call this to tell the player they beat a level
     public void completeLevel() {
         levelState = LevelState.LEVEL_COMPLETED;
+        levelTwo = GameState.LEVEL2;
     }
 
     // if player has beaten level, this will be the update cycle

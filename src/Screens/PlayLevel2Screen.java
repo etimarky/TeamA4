@@ -9,11 +9,12 @@ import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
 import Maps.TestMap;
+import Maps.TestMap2;
 import Players.Cat;
 import Utils.Stopwatch;
 
 // This class is for when the platformer game is actually being played
-public class PlayLevelScreen extends Screen implements PlayerListener {
+public class PlayLevel2Screen extends Screen implements PlayerListener {
     protected ScreenCoordinator screenCoordinator;
     protected Map map;
     protected Player player;
@@ -21,15 +22,14 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     protected Stopwatch screenTimer = new Stopwatch();
     protected LevelClearedScreen levelClearedScreen;
     protected LevelLoseScreen levelLoseScreen;
-    protected PlayLevel2Screen playLevel2Screen;
-    
-    public PlayLevelScreen(ScreenCoordinator screenCoordinator) {
+  
+    public PlayLevel2Screen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
 
     public void initialize() {
         // define/setup map
-        this.map = new TestMap();
+        this.map = new TestMap2();
         map.reset();
 
         // setup player
@@ -54,14 +54,13 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 levelClearedScreen.initialize();
                 screenTimer.setWaitTime(2500);
                 playLevelScreenState = PlayLevelScreenState.LEVEL_WIN_MESSAGE;
-//                playLevel2Screen = new PlayLevel2Screen(screenCoordinator);
-//                playLevel2Screen.initialize();
+                
                 break;
             // if level cleared screen is up and the timer is up for how long it should stay out, go back to main menu
             case LEVEL_WIN_MESSAGE:
                 if (screenTimer.isTimeUp()) {
                     levelClearedScreen = null;
-                    nextLevel();
+                    goBackToMenu();
                 }
                 break;
             // if player died in level, bring up level lost screen
@@ -118,12 +117,9 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     }
 
     public void goBackToMenu() {
-    	screenCoordinator.setGameState(GameState.MENU);
+        screenCoordinator.setGameState(GameState.MENU);
     }
 
-    public void nextLevel() {
-    	screenCoordinator.setGameState(GameState.LEVEL2);
-    }
     // This enum represents the different states this screen can be in
     private enum PlayLevelScreenState {
         RUNNING, LEVEL_COMPLETED, PLAYER_DEAD, LEVEL_WIN_MESSAGE, LEVEL_LOSE_MESSAGE

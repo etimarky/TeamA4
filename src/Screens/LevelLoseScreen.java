@@ -1,6 +1,8 @@
 package Screens;
 
 import Engine.*;
+import Game.GameState;
+import Game.ScreenCoordinator;
 import SpriteFont.SpriteFont;
 
 import java.awt.*;
@@ -11,12 +13,20 @@ public class LevelLoseScreen extends Screen {
     protected SpriteFont instructions;
     protected KeyLocker keyLocker = new KeyLocker();
     protected PlayLevelScreen playLevelScreen;
-
-    public LevelLoseScreen(PlayLevelScreen playLevelScreen) {
+    protected PlayLevel2Screen playLevel2Screen;
+    protected ScreenCoordinator screenCoordinator;
+    
+    public LevelLoseScreen(PlayLevelScreen playLevelScreen, ScreenCoordinator sc1) {
+    	screenCoordinator = sc1;
         this.playLevelScreen = playLevelScreen;
     }
 
-    @Override
+    public LevelLoseScreen(PlayLevel2Screen playLevel2Screen, ScreenCoordinator sc1) {
+    	screenCoordinator = sc1;
+		this.playLevel2Screen = playLevel2Screen;
+	}
+
+	@Override
     public void initialize() {
         loseMessage = new SpriteFont("You lose!", 350, 270, "Comic Sans", 30, Color.white);
         instructions = new SpriteFont("Press Space to try again or Escape to go back to the main menu", 120, 300,"Comic Sans", 20, Color.white);
@@ -35,7 +45,14 @@ public class LevelLoseScreen extends Screen {
 
         // if space is pressed, reset level. if escape is pressed, go back to main menu
         if (Keyboard.isKeyDown(Key.SPACE)) {
-            playLevelScreen.resetLevel();
+            if (screenCoordinator.getGameState() == GameState.LEVEL) {
+            	playLevelScreen.resetLevel();
+            }else {
+            	playLevel2Screen.resetLevel();
+            }
+        	
+        	
+            
         } else if (Keyboard.isKeyDown(Key.ESC)) {
             playLevelScreen.goBackToMenu();
         }
