@@ -5,6 +5,9 @@ import Screens.MenuScreen;
 import SpriteFont.SpriteFont;
 import Utils.Colors;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 
 import Game.GameState;
@@ -13,6 +16,7 @@ import Game.ScreenCoordinator;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 /*
  * This is where the game loop starts
@@ -106,10 +110,28 @@ public class GamePanel extends JPanel {
 		doPaint = true;
 
 	}
+	
+    public static void music() {
+		
+		try {
+			AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File("src/Blossoming Inspiration Loop (online-audio-converter.com).wav"));
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioInput);
+			clip.start();
+			
+		} catch (Exception ex) {
+			System.out.println("No audio found!");
+			ex.printStackTrace();
+			
+		}
+		
+	}
 
 	// this starts the timer (the game loop is started here
 	public void startGame() {
 		timer.start();
+		
+		music();
 	}
 
 	public ScreenManager getScreenManager() {
