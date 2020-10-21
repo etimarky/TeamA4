@@ -110,6 +110,22 @@ public class GamePanel extends JPanel {
 		doPaint = true;
 
 	}
+	
+    public static void music() {
+		
+		try {
+			AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File("src/Blossoming Inspiration Loop (online-audio-converter.com).wav"));
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioInput);
+			clip.start();
+			
+		} catch (Exception ex) {
+			System.out.println("No audio found!");
+			ex.printStackTrace();
+			
+		}
+		
+	}
 
 	  public static void music() {
 			
@@ -129,6 +145,10 @@ public class GamePanel extends JPanel {
 	// this starts the timer (the game loop is started here
 	public void startGame() {
 		timer.start();
+<<<<<<< HEAD
+=======
+		
+>>>>>>> 27ce09ec70ab7434546a7fd66126cfc1fd8d80c8
 		music();
 	}
 
