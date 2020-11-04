@@ -338,7 +338,7 @@ public abstract class Player extends GameObject {
     // other entities can call this to tell the player they beat a level
     public void completeLevel() {
         levelState = LevelState.LEVEL_COMPLETED;
-        levelTwo = GameState.LEVEL2;
+     
     }
 
     // if player has beaten level, this will be the update cycle

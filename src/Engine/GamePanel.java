@@ -1,6 +1,7 @@
 package Engine;
 
 import GameObject.Rectangle;
+
 import Screens.MenuScreen;
 import SpriteFont.SpriteFont;
 import Utils.Colors;
@@ -8,6 +9,8 @@ import Utils.Colors;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+//import sun.audio.AudioData;
+
 import javax.swing.*;
 
 import Game.GameState;
@@ -111,29 +114,23 @@ public class GamePanel extends JPanel {
 
 	}
 	
-    public static void music() {
-		
-		try {
-			AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File("src/Blossoming Inspiration Loop (online-audio-converter.com).wav"));
-			Clip clip = AudioSystem.getClip();
-			clip.open(audioInput);
-			clip.start();
-			
-		} catch (Exception ex) {
-			System.out.println("No audio found!");
-			ex.printStackTrace();
-			
-		}
-		
-	}
+    
 
-	  public static void music() {
-			
+	  public void music(String filepath) {
+		  
+		
+		  
 			try {
-				AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File("src/Blossoming Inspiration Loop (online-audio-converter.com).wav"));
-				Clip clip = AudioSystem.getClip();
+				AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File(filepath));
+				Clip clip =AudioSystem.getClip();
 				clip.open(audioInput);
 				clip.start();
+				clip.loop(Clip.LOOP_CONTINUOUSLY);
+			
+				
+				
+				
+				
 				
 			} catch (Exception ex) {
 				System.out.println("No audio found!");
@@ -145,11 +142,8 @@ public class GamePanel extends JPanel {
 	// this starts the timer (the game loop is started here
 	public void startGame() {
 		timer.start();
-<<<<<<< HEAD
-=======
-		
->>>>>>> 27ce09ec70ab7434546a7fd66126cfc1fd8d80c8
-		music();
+
+		music("src/Blossoming Inspiration Loop (online-audio-converter.com).wav");
 	}
 
 	public ScreenManager getScreenManager() {
@@ -158,7 +152,7 @@ public class GamePanel extends JPanel {
 
 	public void update() {
 
-		if (coordinator.getGameState() != GameState.MENU && coordinator.getGameState() != GameState.INSTRUCTIONS && coordinator.getGameState() != GameState.CREDITS) {
+		if (coordinator.getGameState() != GameState.MENU && coordinator.getGameState() != GameState.INSTRUCTIONS && coordinator.getGameState() != GameState.CREDITS && coordinator.getGameState() != GameState.LEVELSELECT) {
 			if (isInstructions == false) {
 				if (Keyboard.isKeyDown(pauseKey) && !keyLocker.isKeyLocked(pauseKey)) {
 
