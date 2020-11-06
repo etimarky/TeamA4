@@ -7,6 +7,10 @@ import Engine.GraphicsHandler;
 import Engine.Screen;
 import Screens.CreditsScreen;
 import Screens.MenuScreen;
+
+import Screens.OpeningScreen;
+//import Screens.PlayLevel2Screen;
+
 import Screens.PlayLevelScreen;
 import Screens.PlayLevelScreen.PlayLevelScreenState;
 import Screens.InstructionsScreen;
@@ -58,9 +62,16 @@ public class ScreenCoordinator extends Screen {
 					case INSTRUCTIONS:
 						currentScreen = new InstructionsScreen(this);
 						break;
+
 					case LEVELSELECT:
 						currentScreen = new PlayLevelScreen(this,PlayLevelScreenState.LEVEL_SELECT);
 						break;
+
+					case OPENING:
+					    currentScreen = new OpeningScreen(this);
+					    break;
+					
+
 				}
 				currentScreen.initialize();
 			}
