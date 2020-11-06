@@ -301,6 +301,11 @@ public abstract class Player extends GameObject {
     			setY(0);
     		}
     	}
+    	if (hasCollided && MapTileCollisionHandler.lastCollidedTileX != null) {
+    		if (MapTileCollisionHandler.lastCollidedTileX.getTileType() == TileType.LETHAL) {
+    			levelState = LevelState.PLAYER_DEAD;
+    		}
+    	}
     }
 
     @Override
@@ -323,6 +328,11 @@ public abstract class Player extends GameObject {
                 jumpForce = 0;
             }
         }
+        if (hasCollided && MapTileCollisionHandler.lastCollidedTileY != null) {
+    		if (MapTileCollisionHandler.lastCollidedTileY.getTileType() == TileType.LETHAL) {
+    			levelState = LevelState.PLAYER_DEAD;
+    		}
+    	}
     }
 
     // other entities can call this method to hurt the player
