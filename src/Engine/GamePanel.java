@@ -127,10 +127,7 @@ public class GamePanel extends JPanel {
 				clip.start();
 				clip.loop(Clip.LOOP_CONTINUOUSLY);
 			
-				
-				
-				
-				
+
 				
 			} catch (Exception ex) {
 				System.out.println("No audio found!");
@@ -143,7 +140,7 @@ public class GamePanel extends JPanel {
 	public void startGame() {
 		timer.start();
 
-		music("src/Blossoming Inspiration Loop (online-audio-converter.com).wav");
+		//music("src/Blossoming Inspiration Loop (online-audio-converter.com).wav");
 	}
 
 	public ScreenManager getScreenManager() {

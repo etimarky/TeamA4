@@ -36,6 +36,8 @@ public class LevelSelectScreen extends Screen {
 
 	@Override
 	public void initialize() {
+		
+		
 		levelOne = new SpriteFont("Level One", 200, 100, "Comic Sans", 30, new Color(49, 207, 240));
 		levelOne.setOutlineColor(Color.black);
 		levelOne.setOutlineThickness(3);
@@ -159,6 +161,7 @@ public class LevelSelectScreen extends Screen {
 	}
 
 	public  void draw(GraphicsHandler graphicsHandler) {
+		background.draw(graphicsHandler);
 		levelOne.draw(graphicsHandler);
 		levelTwo.draw(graphicsHandler);
 		levelThree.draw(graphicsHandler);

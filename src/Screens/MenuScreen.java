@@ -126,7 +126,7 @@ public class MenuScreen extends Screen {
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
-        background.draw(graphicsHandler);
+    	 background.draw(graphicsHandler);
         playGame.draw(graphicsHandler);
         instructions.draw(graphicsHandler);
         credits.draw(graphicsHandler);
