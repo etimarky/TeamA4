@@ -43,7 +43,7 @@ public class OpeningScreen extends Screen {
 	public void initialize() {
 		SpriteSheet catSpriteSheet = new SpriteSheet(ImageLoader.load("Cat.png"), 24, 24);
 		
-		story = new SpriteFont("CAT NEEDS YOUR HELP!", 100, 100, "Comic Sans", 60, new Color(255, 0, 0));
+		story = new SpriteFont("CAT NEEDS YOUR HELP!", 55, 100, "Comic Sans", 60, new Color(255, 0, 0));
 		story.setOutlineColor(Color.black);
         story.setOutlineThickness(3);
         
