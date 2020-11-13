@@ -34,10 +34,6 @@ public class OpeningScreen extends Screen {
 	public OpeningScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
-	
-	
-	
-	
 
 	@Override
 	public void initialize() {

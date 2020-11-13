@@ -39,6 +39,16 @@ public class GameWindow {
 		return gamePanel.getScreenManager();
 		
 	}
+
+	public void paintWindow() {
+		gameWindow.repaint();
+		gamePanel.repaint();
+		gameWindow.setSize(Config.GAME_WINDOW_WIDTH, Config.GAME_WINDOW_HEIGHT);
+		gameWindow.setLocationRelativeTo(null);
+		gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		
+	}
 	
 	
 }

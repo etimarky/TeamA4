@@ -1,8 +1,9 @@
 package Screens;
 
 import Engine.GraphicsHandler;
-
-
+import Engine.Key;
+import Engine.KeyLocker;
+import Engine.Keyboard;
 import Engine.Screen;
 import Game.GameState;
 import Game.ScreenCoordinator;
@@ -17,8 +18,10 @@ import Maps.TestMap5;
 import Players.Cat;
 import Utils.Stopwatch;
 
+
 // This class is for when the platformer game is actually being played
 public class PlayLevelScreen extends Screen implements PlayerListener {
+	private KeyLocker keyLocker = new KeyLocker();
     protected ScreenCoordinator screenCoordinator;
     protected Map map;
     protected Player player;
@@ -26,7 +29,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     protected Stopwatch screenTimer = new Stopwatch();
     protected LevelClearedScreen levelClearedScreen;
     protected LevelLoseScreen levelLoseScreen;
-    
+    protected PauseScreen pauseScreen;
     protected LevelSelectScreen levelSelectScreen;
     protected int levelNum = 0;
     
@@ -41,14 +44,15 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     }
 
     public void initialize() {
-        // define/setup map
+       
         this.map = getCurrentMap();
         map.reset();
         System.out.println(levelNum);
-        // setup player
+        
         levelSelectScreen = new LevelSelectScreen(this);
         levelSelectScreen.initialize();
-        
+        pauseScreen = new PauseScreen(screenCoordinator);
+        pauseScreen.initialize();
         this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         this.player.setMap(map);
         this.player.addListener(this);
@@ -60,9 +64,19 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         // based on screen state, perform specific actions
         switch (playLevelScreenState) {
             // if level is "running" update player and map to keep game logic for the platformer level going
+        
             case RUNNING:
-                player.update();
-                map.update(player);
+            	if (Keyboard.isKeyDown(Key.P)&& !keyLocker.isKeyLocked(Key.P)) {
+            		playLevelScreenState = PlayLevelScreenState.PAUSE;
+            		keyLocker.lockKey(Key.P);
+            	}else {
+            		player.update();
+                    map.update(player);
+            	}
+            	
+            	if (Keyboard.isKeyUp(Key.P)) {
+					keyLocker.unlockKey(Key.P);
+            	}
                 break;
             // if level has been completed, bring up level cleared screen
             case LEVEL_COMPLETED:
@@ -91,6 +105,17 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             case LEVEL_SELECT:
             	levelSelectScreen.update();
             	break;
+            case PAUSE:
+            	if (Keyboard.isKeyDown(Key.P)&& !keyLocker.isKeyLocked(Key.P)) {
+            		playLevelScreenState = PlayLevelScreenState.RUNNING;
+            		keyLocker.lockKey(Key.P);
+            		
+            	}
+            	if (Keyboard.isKeyUp(Key.P)) {
+					keyLocker.unlockKey(Key.P);
+            	}
+            	
+            	break;
      
         }
     }
@@ -114,6 +139,11 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             case LEVEL_SELECT:
             	levelSelectScreen.draw(graphicsHandler);
             	break;
+            case PAUSE:
+            	 map.draw(graphicsHandler);
+                 player.draw(graphicsHandler);
+                 pauseScreen.draw(graphicsHandler);
+                 break;
             
         }
     }
@@ -131,6 +161,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     public void onDeath() {
         playLevelScreenState = PlayLevelScreenState.PLAYER_DEAD;
     }
+    
     
     public Map getCurrentMap() {
     	if (levelNum == 0) {
@@ -178,7 +209,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     }
     // This enum represents the different states this screen can be in
     public enum PlayLevelScreenState {
-        RUNNING, LEVEL_COMPLETED, PLAYER_DEAD, LEVEL_WIN_MESSAGE, LEVEL_LOSE_MESSAGE, LEVEL_SELECT
+        RUNNING, LEVEL_COMPLETED, PLAYER_DEAD, LEVEL_WIN_MESSAGE, LEVEL_LOSE_MESSAGE, LEVEL_SELECT, PAUSE
     }
     
     
