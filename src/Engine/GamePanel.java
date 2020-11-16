@@ -31,6 +31,7 @@ public class GamePanel extends JPanel {
 	// loads Screens on to the JPanel
 	// each screen has its own update and draw methods defined to handle a "section"
 	// of the game.
+	protected KeyLocker keyLocker = new KeyLocker();
 	private ScreenManager screenManager;
 	// used to create the game loop and cycle between update and draw calls
 	private Timer timer;
@@ -38,25 +39,20 @@ public class GamePanel extends JPanel {
 	private GraphicsHandler graphicsHandler;
 	private boolean doPaint = false;
 	protected int pointerLocationX, pointerLocationY;	
-	private boolean isInstructions = false;
 	protected Stopwatch keyTimer = new Stopwatch();
-	private SpriteFont instructionLabel;
-	private SpriteFont instruction2Label;
-	private SpriteFont instruction3Label;
-	private SpriteFont instruction4Label;
-	private SpriteFont returnInstructionLabel;
-	
-	private ScreenCoordinator coordinator;
+	protected static GameWindow gameWindow;
+	private static ScreenCoordinator coordinator;
 	
 
 	/*
 	 * The JPanel and various important class instances are setup here
 	 */
-	public GamePanel(ScreenCoordinator c1) {
+	public GamePanel(ScreenCoordinator c1,GameWindow gameWindow) {
 		super();
+		this.gameWindow = gameWindow;
 		this.setDoubleBuffered(true);
 
-		this.setSize(Config.GAME_WINDOW_WIDTH, Config.GAME_WINDOW_HEIGHT);
+		this.setSize(Config.WIDTH, Config.HEIGHT);
 		// attaches Keyboard class's keyListener to this JPanel
 		this.addKeyListener(Keyboard.getKeyListener());
 
@@ -66,8 +62,6 @@ public class GamePanel extends JPanel {
 		coordinator = c1;
 
 	
-		createInstructionsScreen();
-
 		
 
 		timer = new Timer(1000 / Config.FPS, new ActionListener() {
@@ -79,28 +73,9 @@ public class GamePanel extends JPanel {
 		timer.setRepeats(true);
 	}
 
-	private void createInstructionsScreen() {
-		instructionLabel = new SpriteFont("To JUMP: UP arrow key, or 'W', or SPACEBAR", 130, 140, "Times New Roman", 20,
-				Color.white);
-		instruction2Label = new SpriteFont("To MOVE LEFT: LEFT arrow key, or 'A'", 130, 170, "Times New Roman", 20,
-				Color.white);
-		instruction3Label = new SpriteFont("To MOVE RIGHT: RIGHT arrow key, or 'D'", 130, 220, "Times New Roman", 20,
-				Color.white);
-		instruction4Label = new SpriteFont("To CROUCH: DOWN arrow key, or 'S'", 130, 260, "Times New Roman", 20,
-				Color.white);
-		returnInstructionLabel = new SpriteFont("Press X to return", 20, 560, "Times New Roman", 20, Color.white);
-		instructionLabel.setOutlineColor(Color.white);
-		instructionLabel.setOutlineThickness(2.0f);
-		instruction2Label.setOutlineColor(Color.white);
-		instruction2Label.setOutlineThickness(2.0f);
-		instruction3Label.setOutlineColor(Color.white);
-		instruction3Label.setOutlineThickness(2.0f);
-		instruction4Label.setOutlineColor(Color.white);
-		instruction4Label.setOutlineThickness(2.0f);
-
+	public static ScreenCoordinator getScreenCoordinator() {
+		return coordinator;
 	}
-
-
 	// this is called later after instantiation, and will initialize screenManager
 	// this had to be done outside of the constructor because it needed to know the
 	// JPanel's width and height, which aren't available in the constructor
@@ -110,7 +85,9 @@ public class GamePanel extends JPanel {
 		doPaint = true;
 
 	}
-
+	public static GameWindow getGameWindow() {
+		return gameWindow;
+	}
 	public static void music(String filepath, double gain) {
 
 		try {
@@ -152,7 +129,7 @@ public class GamePanel extends JPanel {
 	public void startGame() {
 		timer.start();
 
-		music("src/Blossoming Inspiration Loop (online-audio-converter.com).wav",1);
+		//music("src/Blossoming Inspiration Loop (online-audio-converter.com).wav",1);
 	}
 
 	public ScreenManager getScreenManager() {
@@ -160,29 +137,12 @@ public class GamePanel extends JPanel {
 	}
 
 	public void update() {
-		
-		//if (!isInstructions && !isGamePaused) {
 			screenManager.update();
-		//}
-
 	}
 
 	public void draw() {
 		screenManager.draw(graphicsHandler);
 
-	
-
-		if (isInstructions) {
-
-			instructionLabel.draw(graphicsHandler);
-			instruction2Label.draw(graphicsHandler);
-			instruction3Label.draw(graphicsHandler);
-			instruction4Label.draw(graphicsHandler);
-			returnInstructionLabel.draw(graphicsHandler);
-
-			graphicsHandler.drawFilledRectangle(0, 0, ScreenManager.getScreenWidth(), ScreenManager.getScreenHeight(),
-					new Color(0, 0, 0, 100));
-		}
 
 	}
 

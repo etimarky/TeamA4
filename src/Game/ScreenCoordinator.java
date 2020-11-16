@@ -1,16 +1,13 @@
 package Game;
 
 import Engine.DefaultScreen;
-
-
 import Engine.GraphicsHandler;
 import Engine.Screen;
 import Screens.CreditsScreen;
 import Screens.MenuScreen;
 
 import Screens.OpeningScreen;
-//import Screens.PlayLevel2Screen;
-import Screens.PauseScreen;
+import Screens.OptionsScreen;
 import Screens.PlayLevelScreen;
 import Screens.PlayLevelScreen.PlayLevelScreenState;
 import Screens.InstructionsScreen;
@@ -70,8 +67,8 @@ public class ScreenCoordinator extends Screen {
 					case OPENING:
 					    currentScreen = new OpeningScreen(this);
 					    break;
-					case PAUSE:
-						currentScreen = new PauseScreen(this);
+					case OPTIONS:
+						currentScreen = new OptionsScreen();
 					    
 					
 

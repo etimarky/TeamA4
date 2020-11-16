@@ -1,5 +1,6 @@
 package Level;
 
+import Engine.Config;
 import Engine.GraphicsHandler;
 import Engine.ScreenManager;
 import GameObject.GameObject;
@@ -251,11 +252,28 @@ public class Camera extends Rectangle {
 
     // gets end bound X position of the camera (start position is always 0)
     public float getEndBoundX() {
-        return x + (width * tileWidth) + leftoverSpaceX + 120;
+    	if (Config.WIDTH == 1000) {
+    		return x + (width * tileWidth) + leftoverSpaceX + 140;
+    	}else if (Config.WIDTH == 800) {
+    		return x + (width * tileWidth) + leftoverSpaceX + 140;
+    	}
+    	else {
+    		return x + (width * tileWidth) + leftoverSpaceX;
+    	}
+        
     }
 
     // gets end bound Y position of the camera (start position is always 0)
     public float getEndBoundY() {
-        return y + (height * tileHeight) + leftoverSpaceY + 120;
+    	
+    	if (Config.HEIGHT == 800) {
+    		return y + (height * tileHeight) + leftoverSpaceY + 140;
+    	}else if (Config.HEIGHT== 600) {
+    		return y + (height * tileHeight) + leftoverSpaceY + 140;
+    	}
+    	else {
+    		return y + (height * tileHeight) + leftoverSpaceY;
+    	}
+        
     }
 }

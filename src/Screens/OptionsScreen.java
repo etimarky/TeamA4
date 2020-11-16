@@ -11,6 +11,8 @@ import Engine.Screen;
 import Engine.ScreenManager;
 import Game.GameState;
 import Game.ScreenCoordinator;
+import Level.Map;
+import Maps.LevelSelectMap;
 import Maps.TitleScreenMap;
 import SpriteFont.SpriteFont;
 import Utils.Stopwatch;
@@ -18,28 +20,34 @@ import Utils.Stopwatch;
 import java.awt.*;
 
 // This class is for the level cleared screen
-public class PauseScreen extends Screen {
-	private SpriteFont volumeControl;
-	private SpriteFont volumeLow;
-	private SpriteFont volumeMed;
-	private SpriteFont volumeHigh;
-	private SpriteFont aspectControl;
-	private SpriteFont aspectHigh;
-	private SpriteFont aspectMed;
-	private SpriteFont aspectLow;
-	private SpriteFont returnInstructionLabel;
-	private GameWindow gameWindow;
-	private KeyLocker keyLocker;
+public class OptionsScreen extends Screen {
+	protected Config config;
+	protected SpriteFont volumeControl;
+	protected SpriteFont volumeLow;
+	protected SpriteFont volumeMed;
+	protected SpriteFont volumeHigh;
+	protected SpriteFont aspectControl;
+	protected SpriteFont aspectHigh;
+	protected SpriteFont aspectMed;
+	protected SpriteFont aspectLow;
+	protected SpriteFont returnInstructionLabel;
+	protected GameWindow gameWindow;
+	protected KeyLocker keyLocker = new KeyLocker();
+	protected Map background;
 	protected int pointerLocationX, pointerLocationY;
 	protected Stopwatch keyTimer = new Stopwatch();
-	protected int currentItemHovered, itemSelected;
+	protected int currentItemHovered =0;
+	protected int itemSelected = -1;
+	protected ScreenCoordinator screenCoordinator;
 	
-	public PauseScreen(ScreenCoordinator screenCoordinator) {
+	public OptionsScreen() {
 		
 	}
 
 	@Override
 	public void initialize() {
+		gameWindow = GamePanel.getGameWindow();
+		screenCoordinator = GamePanel.getScreenCoordinator();
 		volumeControl = new SpriteFont("Volume Control", 100, 150, "Comic Sans", 30, Color.white);
 
 		volumeControl.setOutlineColor(Color.black);
@@ -71,18 +79,20 @@ public class PauseScreen extends Screen {
 		returnInstructionLabel.setOutlineThickness(2.0f);
 		
 
-//		
-        keyTimer.setWaitTime(200);
-        itemSelected = -1;
-       
+		background = new LevelSelectMap();
+		background.setAdjustCamera(false);
+		keyTimer.setWaitTime(200);
+		
+		keyLocker.lockKey(Key.SPACE);
 	}
 
 	@Override
 	public void update() {
-
-		keyLocker.lockKey(Key.SPACE);
-		currentItemHovered = 0;
-		//keyLocker.lockKey(Key.SPACE);
+		
+		background.update(null);
+		
+		
+		
 		
 		if (Keyboard.isKeyDown(Key.RIGHT) && keyTimer.isTimeUp()) {
             keyTimer.reset();
@@ -97,7 +107,7 @@ public class PauseScreen extends Screen {
 	            currentItemHovered = 0;
 	        } else if (currentItemHovered < 0) {
 	            currentItemHovered = 7;
-	        }
+	     }
 
 
 		if (currentItemHovered == 0) {
@@ -109,8 +119,8 @@ public class PauseScreen extends Screen {
 			volumeLow.setColor(new Color(49, 207, 240));
 			volumeMed.setColor(new Color(49, 207, 240));
 			volumeControl.setColor(new Color(255, 215, 0));
-			pointerLocationX = 50;
-			pointerLocationY = 130;
+//			pointerLocationX = 50;
+//			pointerLocationY = 130;
 		} else if (currentItemHovered == 1) {
 			aspectControl.setColor(new Color(49, 207, 240));
 			aspectHigh.setColor(new Color(49, 207, 240));
@@ -120,8 +130,8 @@ public class PauseScreen extends Screen {
 			volumeLow.setColor(new Color(255, 215, 0));
 			volumeMed.setColor(new Color(49, 207, 240));
 			volumeControl.setColor(new Color(49, 207, 240));
-			pointerLocationX = 50;
-			pointerLocationY = 130;
+//			pointerLocationX = 50;
+//			pointerLocationY = 130;
 		} else if (currentItemHovered == 2) {
 			aspectControl.setColor(new Color(49, 207, 240));
 			aspectHigh.setColor(new Color(49, 207, 240));
@@ -131,8 +141,8 @@ public class PauseScreen extends Screen {
 			volumeLow.setColor(new Color(49, 207, 240));
 			volumeMed.setColor(new Color(255, 215, 0));
 			volumeControl.setColor(new Color(49, 207, 240));
-			pointerLocationX = 50;
-			pointerLocationY = 130;
+//			pointerLocationX = 380;
+//			pointerLocationY = 130;
 
 		} else if (currentItemHovered == 3) {
 			aspectControl.setColor(new Color(49, 207, 240));
@@ -143,8 +153,8 @@ public class PauseScreen extends Screen {
 			volumeLow.setColor(new Color(49, 207, 240));
 			volumeMed.setColor(new Color(49, 207, 240));
 			volumeControl.setColor(new Color(49, 207, 240));
-			pointerLocationX = 50;
-			pointerLocationY = 130;
+//			pointerLocationX = 480;
+//			pointerLocationY = 130;
 		} else if (currentItemHovered == 4) {
 			aspectControl.setColor(new Color(255, 215, 0));
 			aspectHigh.setColor(new Color(49, 207, 240));
@@ -154,8 +164,8 @@ public class PauseScreen extends Screen {
 			volumeLow.setColor(new Color(49, 207, 240));
 			volumeMed.setColor(new Color(49, 207, 240));
 			volumeControl.setColor(new Color(49, 207, 240));
-			pointerLocationX = 50;
-			pointerLocationY = 280;
+//			pointerLocationX = 610;
+//			pointerLocationY = 280;
 		} else if (currentItemHovered == 5) {
 			aspectControl.setColor(new Color(49, 207, 240));
 			aspectHigh.setColor(new Color(49, 207, 240));
@@ -165,8 +175,8 @@ public class PauseScreen extends Screen {
 			volumeLow.setColor(new Color(49, 207, 240));
 			volumeMed.setColor(new Color(49, 207, 240));
 			volumeControl.setColor(new Color(49, 207, 240));
-			pointerLocationX = 50;
-			pointerLocationY = 280;
+//			pointerLocationX = 380;
+//			pointerLocationY = 280;
 		} else if (currentItemHovered == 6) {
 
 			aspectControl.setColor(new Color(49, 207, 240));
@@ -177,8 +187,8 @@ public class PauseScreen extends Screen {
 			volumeLow.setColor(new Color(49, 207, 240));
 			volumeMed.setColor(new Color(49, 207, 240));
 			volumeControl.setColor(new Color(49, 207, 240));
-			pointerLocationX = 50;
-			pointerLocationY = 280;
+//			pointerLocationX = 480;
+//			pointerLocationY = 280;
 		} else if (currentItemHovered == 7) {
 			aspectControl.setColor(new Color(49, 207, 240));
 			aspectHigh.setColor(new Color(255, 215, 0));
@@ -188,10 +198,10 @@ public class PauseScreen extends Screen {
 			volumeLow.setColor(new Color(49, 207, 240));
 			volumeMed.setColor(new Color(49, 207, 240));
 			volumeControl.setColor(new Color(49, 207, 240));
-			pointerLocationX = 50;
-			pointerLocationY = 280;
+//			pointerLocationX = 610;
+//			pointerLocationY = 280;
 		}
-
+		
 		// if space is pressed on menu item, change to appropriate screen based on which
 		// menu item was chosen
 		if (Keyboard.isKeyUp(Key.SPACE)) {
@@ -204,7 +214,7 @@ public class PauseScreen extends Screen {
 				
 			} else if (itemSelected == 1) {
 				setVolumeLow();
-
+				
 			} else if (itemSelected == 2) {
 				setVolumeMed();
 			} else if (itemSelected == 3) {
@@ -213,32 +223,52 @@ public class PauseScreen extends Screen {
 
 			} else if (itemSelected == 5) {
 				setScreenSmall();
+				
 
 			} else if (itemSelected == 6) {
 				setScreenMed();
+				
 			} else if (itemSelected == 7) {
 				setScreenLarge();
+				
 			}
 		}
+		
+		 if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
+	            screenCoordinator.setGameState(GameState.MENU);
+	       }
 	}
 
 	public void setScreenSmall() {
-		Config.GAME_WINDOW_WIDTH = 500;
-		Config.GAME_WINDOW_HEIGHT = 300;
+		Config.WIDTH = 600;
+		Config.HEIGHT = 400;
+//		Config.setWidth(500);
+//		Config.setHeight(300);
+		System.out.println(Config.WIDTH);
+		System.out.println(Config.HEIGHT);
+		
 		gameWindow.paintWindow();
 
 	}
 
 	public void setScreenMed() {
-		Config.GAME_WINDOW_WIDTH = 800;
-		Config.GAME_WINDOW_HEIGHT = 605;
-		gameWindow.paintWindow();
+		Config.WIDTH = 800;
+		Config.HEIGHT = 600;
+//		Config.setWidth(800);
+//		Config.setHeight(605);
+		System.out.println(Config.WIDTH);
+		System.out.println(Config.HEIGHT);
+		gameWindow.setScreenMed();
 	}
 
 	public void setScreenLarge() {
-		Config.GAME_WINDOW_WIDTH = 1000;
-		Config.GAME_WINDOW_HEIGHT = 800;
-		gameWindow.paintWindow();
+		Config.WIDTH = 1200;
+		Config.HEIGHT = 800;
+//		Config.setWidth(1000);
+//		Config.setHeight(800);
+		System.out.println(Config.WIDTH);
+		System.out.println(Config.HEIGHT);
+		gameWindow.setScreenLarge();
 	}
 
 	public void setVolumeLow() {
@@ -259,7 +289,7 @@ public class PauseScreen extends Screen {
 	}
 
 	public void draw(GraphicsHandler graphicsHandler) {
-		// pauseLabel.draw(graphicsHandler);
+		background.draw(graphicsHandler);
 		aspectControl.draw(graphicsHandler);
 		aspectHigh.draw(graphicsHandler);
 		aspectLow.draw(graphicsHandler);
@@ -268,9 +298,9 @@ public class PauseScreen extends Screen {
 		volumeLow.draw(graphicsHandler);
 		volumeMed.draw(graphicsHandler);
 		volumeControl.draw(graphicsHandler);
-		graphicsHandler.drawFilledRectangleWithBorder(pointerLocationX, pointerLocationY, 20, 20,
-				new Color(49, 207, 240), Color.black, 2);
-//		graphicsHandler.drawFilledRectangle(0, 0, ScreenManager.getScreenWidth(), ScreenManager.getScreenHeight(),
-//				new Color(0, 0, 0, 100));
+		
+		//graphicsHandler.drawFilledRectangleWithBorder(pointerLocationX, pointerLocationY, 20, 20,
+			//	new Color(49, 207, 240), Color.black, 2);
+
 	}
 }

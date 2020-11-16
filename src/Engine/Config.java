@@ -12,10 +12,26 @@ public class Config {
     public static final int FPS = 100;
     public static final String RESOURCES_PATH = "Resources/";
     public static final String MAP_FILES_PATH = "MapFiles/";
-    public static int GAME_WINDOW_WIDTH = 1000;
-    public static int GAME_WINDOW_HEIGHT = 805;
+    public static int WIDTH= 1000;
+    public static int HEIGHT = 805;
     public static final Color TRANSPARENT_COLOR = Colors.MAGENTA;
 
     // prevents Config from being instantiated -- it's my way of making a "static" class like C# has
-    private Config() { }
+    private Config() {
+    	
+    }
+//    
+//    public static int getWidth() {
+//    	return width;
+//    }
+//    public static int getHeight() {
+//    	return height;
+//    }
+//    public static void setHeight(int h) {
+//    	height = h;
+//    }
+//    public static void setWidth(int w) {
+//    	width = w;
+//    }
+    
 }
