@@ -29,7 +29,7 @@ public class Camera extends Rectangle {
     private ArrayList<NPC> activeNPCs = new ArrayList<>();
 
     // determines how many tiles off screen an entity can be before it will be deemed inactive and not included in the update/draw cycles until it comes back in range
-    private final int UPDATE_OFF_SCREEN_RANGE = 4;
+    private final int UPDATE_OFF_SCREEN_RANGE = 10;
 
     public Camera(int startX, int startY, int tileWidth, int tileHeight, Map map) {
         super(startX, startY, ScreenManager.getScreenWidth() / tileWidth, ScreenManager.getScreenHeight() / tileHeight);
@@ -46,6 +46,7 @@ public class Camera extends Rectangle {
         int xIndex = Math.round(getX()) / tileWidth;
         int yIndex = Math.round(getY()) / tileHeight;
         return new Point(xIndex, yIndex);
+        
     }
 
     public void update(Player player) {
@@ -252,28 +253,15 @@ public class Camera extends Rectangle {
 
     // gets end bound X position of the camera (start position is always 0)
     public float getEndBoundX() {
-    	if (Config.WIDTH == 1000) {
-    		return x + (width * tileWidth) + leftoverSpaceX + 140;
-    	}else if (Config.WIDTH == 800) {
-    		return x + (width * tileWidth) + leftoverSpaceX + 140;
-    	}
-    	else {
-    		return x + (width * tileWidth) + leftoverSpaceX;
-    	}
+    	return x + (width * tileWidth) + leftoverSpaceX;
         
     }
 
     // gets end bound Y position of the camera (start position is always 0)
     public float getEndBoundY() {
-    	
-    	if (Config.HEIGHT == 800) {
-    		return y + (height * tileHeight) + leftoverSpaceY + 140;
-    	}else if (Config.HEIGHT== 600) {
-    		return y + (height * tileHeight) + leftoverSpaceY + 140;
-    	}
-    	else {
+ 
     		return y + (height * tileHeight) + leftoverSpaceY;
-    	}
+
         
     }
 }

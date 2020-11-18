@@ -21,6 +21,7 @@ public class LevelLoseScreen extends Screen {
 		this.playLevelScreen = playLevelScreen;
 	}
 
+	
 	@Override
 	public void initialize() {
 		loseMessage = new SpriteFont("You lose!", 350, 270, "Comic Sans", 30, Color.white);
@@ -49,8 +50,7 @@ public class LevelLoseScreen extends Screen {
 	}
 
 	public void draw(GraphicsHandler graphicsHandler) {
-		graphicsHandler.drawFilledRectangle(0, 0, ScreenManager.getScreenWidth(), ScreenManager.getScreenHeight(),
-				Color.black);
+		graphicsHandler.drawFilledRectangle(0, 0, Config.WIDTH, Config.HEIGHT,Color.black);
 		loseMessage.draw(graphicsHandler);
 		instructions.draw(graphicsHandler);
 	}

@@ -10,6 +10,7 @@ import Utils.Stopwatch;
 
 import java.awt.*;
 
+
 // This is the class for the main menu screen
 public class MenuScreen extends Screen {
     protected ScreenCoordinator screenCoordinator;

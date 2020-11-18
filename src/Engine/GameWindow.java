@@ -1,5 +1,7 @@
 package Engine;
 
+import java.awt.BorderLayout;
+
 import javax.swing.*;
 
 import Game.ScreenCoordinator;
@@ -13,6 +15,7 @@ public class GameWindow {
 	private GamePanel gamePanel;
 	
 	
+	
 
 	public GameWindow(ScreenCoordinator c1) {
 		gameWindow = new JFrame("Game");
@@ -21,7 +24,6 @@ public class GameWindow {
 		gamePanel.requestFocusInWindow();
 		gameWindow.setContentPane(gamePanel);
 		gameWindow.setResizable(false);
-		
 		gameWindow.setSize(Config.WIDTH, Config.HEIGHT);
 		gameWindow.setLocationRelativeTo(null);
 		gameWindow.setVisible(true);
@@ -51,26 +53,7 @@ public class GameWindow {
 		
 		
 	}
-
-	public void setScreenSmall() {
-//		Config.setWidth(500);
-//		Config.setHeight(300);
-		System.out.println(Config.WIDTH);
-		System.out.println(Config.HEIGHT);
-		
-		//paintWindow();
-		
-	}
-	public void setScreenMed() {
-//		Config.setWidth(800);
-//		Config.setHeight(605);
-		paintWindow();
-	}
-	public void setScreenLarge() {
-//		Config.setWidth(1000);
-//		Config.setHeight(800);
-		paintWindow();
-	}
+	
 
 	
 	

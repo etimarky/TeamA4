@@ -4,6 +4,7 @@ import GameObject.Rectangle;
 
 
 
+
 import SpriteFont.SpriteFont;
 import Utils.Colors;
 import Utils.Stopwatch;
@@ -42,8 +43,9 @@ public class GamePanel extends JPanel {
 	protected Stopwatch keyTimer = new Stopwatch();
 	protected static GameWindow gameWindow;
 	private static ScreenCoordinator coordinator;
-	
+	public static Clip clip;
 
+	
 	/*
 	 * The JPanel and various important class instances are setup here
 	 */
@@ -88,48 +90,54 @@ public class GamePanel extends JPanel {
 	public static GameWindow getGameWindow() {
 		return gameWindow;
 	}
+	
 	public static void music(String filepath, double gain) {
-
+	
 		try {
 			AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File(filepath));
-			Clip clip = AudioSystem.getClip();
+			clip = AudioSystem.getClip();
 			clip.open(audioInput);
+			setVolume(gain);
 			clip.start();
+	
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
 			
-			FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 			
-			
-			
-			
-			float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
-			gainControl.setValue(dB);
 
 		} catch (Exception ex) {
 			System.out.println("No audio found!");
 			ex.printStackTrace();
 
 		}
-
+		
 	}
-	public static void setVolumeLow() {
-		music("src/Blossoming Inspiration Loop (online-audio-converter.com).wav",.25);
+	public static void setVolume(double gain) {
+		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
+		gainControl.setValue(dB);
+		
+	}
 
+	public static void setVolumeLow() {
+		
+		setVolume(.5);
 	}
 
 	public static void setVolumeMed() {
-		music("src/Blossoming Inspiration Loop (online-audio-converter.com).wav",.55);
+		setVolume(1);
+		
 	}
 
 	public static void setVolumeHigh() {
-		music("src/Blossoming Inspiration Loop (online-audio-converter.com).wav",2);
+		setVolume(2);
+		
 	}
 
 	// this starts the timer (the game loop is started here
 	public void startGame() {
 		timer.start();
 
-		//music("src/Blossoming Inspiration Loop (online-audio-converter.com).wav",1);
+		music("src/Blossoming Inspiration Loop (online-audio-converter.com).wav",1);
 	}
 
 	public ScreenManager getScreenManager() {

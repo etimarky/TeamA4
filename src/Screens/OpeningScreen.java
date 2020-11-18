@@ -31,6 +31,7 @@ public class OpeningScreen extends Screen {
 	private SpriteFont story6;
 	
 	
+	
 	public OpeningScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
@@ -121,7 +122,7 @@ public class OpeningScreen extends Screen {
                             .withBounds(8, 9, 8, 9)
                             .build()
             });
-
+            
             put("WALK_RIGHT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(1, 0), 200)
                             .withScale(3)

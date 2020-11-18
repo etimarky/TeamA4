@@ -35,15 +35,19 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 	protected SpriteFont pauseLabel;
 	protected LevelSelectScreen levelSelectScreen;
 	protected int levelNum = 0;
+	protected int catNum = 0;
 	private SpriteFont instructionLabel;
 	private SpriteFont instruction2Label;
 	private SpriteFont instruction3Label;
 	private SpriteFont instruction4Label;
-//	private SpriteFont returnInstructionLabel;
+	private SpriteFont returnInstructionLabel;
+	protected OptionsScreen optionsScreen;
 
 	public PlayLevelScreen(ScreenCoordinator screenCoordinator) {
+		
 		this.screenCoordinator = screenCoordinator;
 		this.playLevelScreenState = PlayLevelScreenState.RUNNING;
+		
 	}
 
 	public PlayLevelScreen(ScreenCoordinator screenCoordinator, PlayLevelScreenState state) {
@@ -60,7 +64,10 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
 		levelSelectScreen = new LevelSelectScreen(this);
 		levelSelectScreen.initialize();
-
+		
+		optionsScreen = new OptionsScreen(this);
+		optionsScreen.initialize();
+		
 		pauseLabel = new SpriteFont("Pause", 350, 250, "Comic Sans", 30, Color.white);
 		
 
@@ -72,7 +79,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 				Color.white);
 		instruction4Label = new SpriteFont("To CROUCH: DOWN arrow key, or 'S'", 130, 260, "Times New Roman", 20,
 				Color.white);
-		//returnInstructionLabel = new SpriteFont("Press X to return", 20, 560, "Times New Roman", 20, Color.white);
+		returnInstructionLabel = new SpriteFont("Press X to return", 20, 560, "Times New Roman", 20, Color.white);
 		instructionLabel.setOutlineColor(Color.white);
 		instructionLabel.setOutlineThickness(2.0f);
 		instruction2Label.setOutlineColor(Color.white);
@@ -81,8 +88,10 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		instruction3Label.setOutlineThickness(2.0f);
 		instruction4Label.setOutlineColor(Color.white);
 		instruction4Label.setOutlineThickness(2.0f);
-
-		this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+		
+		
+		this.player = getCat();
+		//this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
 		this.player.setMap(map);
 		this.player.addListener(this);
 		this.player.setLocation(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
@@ -145,6 +154,9 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		case LEVEL_SELECT:
 			levelSelectScreen.update();
 			break;
+		case OPTIONS:
+			optionsScreen.update();
+			break;
 		case PAUSE:
 			if (Keyboard.isKeyDown(Key.P) && !keyLocker.isKeyLocked(Key.P)) {
 				playLevelScreenState = PlayLevelScreenState.RUNNING;
@@ -190,6 +202,9 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		case LEVEL_SELECT:
 			levelSelectScreen.draw(graphicsHandler);
 			break;
+		case OPTIONS:
+			optionsScreen.draw(graphicsHandler);
+			break;
 		case PAUSE:
 					map.draw(graphicsHandler);
 			player.draw(graphicsHandler);
@@ -204,7 +219,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 			instruction2Label.draw(graphicsHandler);
 			instruction3Label.draw(graphicsHandler);
 			instruction4Label.draw(graphicsHandler);
-			//returnInstructionLabel.draw(graphicsHandler);
+			returnInstructionLabel.draw(graphicsHandler);
 
 			graphicsHandler.drawFilledRectangle(0, 0, ScreenManager.getScreenWidth(), ScreenManager.getScreenHeight(),
 					new Color(0, 0, 0, 100));
@@ -230,7 +245,6 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		if (levelNum == 0) {
 			return new TestMap();
 		} else if (levelNum == 1) {
-			System.out.println("Level 2");
 			return new TestMap2();
 		} else if (levelNum == 2) {
 			return new TestMap3();
@@ -269,10 +283,27 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 	public void setPlayLevelScreenState(PlayLevelScreenState state) {
 		playLevelScreenState = state;
 	}
-
+	public Cat getCat() {
+		
+		if (catNum == 1) {
+			return new Cat("Cat.png",map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+		} else if (catNum == 2) {
+	
+			return new Cat("CatBlue.png", map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+		}  else {
+			return new Cat("CatGreen.png",map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+		}
+		
+	}
+	
 	// This enum represents the different states this screen can be in
 	public enum PlayLevelScreenState {
-		RUNNING, LEVEL_COMPLETED, PLAYER_DEAD, LEVEL_WIN_MESSAGE, LEVEL_LOSE_MESSAGE, LEVEL_SELECT, PAUSE, INSTRUCTIONS
+		RUNNING, LEVEL_COMPLETED, PLAYER_DEAD, LEVEL_WIN_MESSAGE, LEVEL_LOSE_MESSAGE, LEVEL_SELECT, PAUSE, INSTRUCTIONS, OPTIONS
+	}
+
+	public void setCatNum(int i) {
+		catNum = i;
+		
 	}
 
 }

@@ -1,6 +1,7 @@
 package Game;
 
 import Engine.DefaultScreen;
+import Engine.GameWindow;
 import Engine.GraphicsHandler;
 import Engine.Screen;
 import Screens.CreditsScreen;
@@ -19,6 +20,7 @@ import Screens.InstructionsScreen;
  */
 public class ScreenCoordinator extends Screen {
 	// currently shown Screen
+	protected GameWindow gameWindow;
 	protected Screen currentScreen = new DefaultScreen();
 
 	// keep track of gameState so ScreenCoordinator knows which Screen to show
@@ -68,10 +70,8 @@ public class ScreenCoordinator extends Screen {
 					    currentScreen = new OpeningScreen(this);
 					    break;
 					case OPTIONS:
-						currentScreen = new OptionsScreen();
-					    
-					
-
+						currentScreen = new PlayLevelScreen(this,PlayLevelScreenState.OPTIONS);
+						break;
 				}
 				currentScreen.initialize();
 			}
