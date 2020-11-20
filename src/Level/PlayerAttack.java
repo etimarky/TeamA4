@@ -1,4 +1,5 @@
-package Enemies;
+package Level;
+
 
 import Builders.FrameBuilder;
 import Engine.ImageLoader;
@@ -10,24 +11,25 @@ import Level.Player;
 import Utils.Direction;
 import Utils.Point;
 import Utils.Stopwatch;
-
+import Level.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 // This class is for the fireball enemy that the DinosaurEnemy class shoots out
 // it will travel in a straight line (x axis) for a set time before disappearing
 // it will disappear early if it collides with a solid map tile
-public class Fireball extends Enemy {
+public class PlayerAttack extends Enemy {
     private float movementSpeed;
     private Stopwatch existenceTimer = new Stopwatch();
 
-    public Fireball(Point location, float movementSpeed, int existenceTime) {
+    public PlayerAttack(Point location, float movementSpeed, int existenceTime) {
         super(location.x, location.y, new SpriteSheet(ImageLoader.load("Fireball.png"), 7, 7), "DEFAULT");
         this.movementSpeed = movementSpeed;
 
         // how long the fireball will exist for before disappearing
         existenceTimer.setWaitTime(existenceTime);
 
-        // this will not respawn after it has been removed
+        // this enemy will not respawn after it has been removed
         isRespawnable = false;
 
         initialize();
@@ -40,9 +42,15 @@ public class Fireball extends Enemy {
         if (existenceTimer.isTimeUp()) {
             this.mapEntityStatus = MapEntityStatus.REMOVED;
         } else {
-            // move fireball forward
+            // move attack forward
             moveXHandleCollision(movementSpeed);
             super.update(player);
+            ArrayList<Enemy> enemies = map.getActiveEnemies();
+            for (int i = 0; i < enemies.size(); i++) {
+            	if (intersects(enemies.get(i)) && !(enemies.get(i) instanceof PlayerAttack)) {
+            		enemies.get(i).mapEntityStatus = MapEntityStatus.REMOVED;
+            	}
+            }
         }
     }
 
@@ -57,13 +65,13 @@ public class Fireball extends Enemy {
     @Override
     public void touchedPlayer(Player player) {
         // if fireball touches player, it disappears
-        super.touchedPlayer(player);
-        this.mapEntityStatus = MapEntityStatus.REMOVED;
-    }
-    
-    public void touchedEnemy(Enemy enemy) {
+        //super.touchedPlayer(player);
+        //this.mapEntityStatus = MapEntityStatus.REMOVED;
+    	
+    	
     	
     }
+    
 
     @Override
     public HashMap<String, Frame[]> getAnimations(SpriteSheet spriteSheet) {

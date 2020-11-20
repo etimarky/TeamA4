@@ -8,8 +8,12 @@ import GameObject.GameObject;
 import GameObject.SpriteSheet;
 import Utils.AirGroundState;
 import Utils.Direction;
+import Utils.Point;
 
 import java.util.ArrayList;
+
+import Enemies.Fireball;
+import Enemies.DinosaurEnemy.DinosaurState;
 
 public abstract class Player extends GameObject {
     // values that affect player movement
@@ -56,9 +60,12 @@ public abstract class Player extends GameObject {
     protected Key upKey = Key.W;
     protected Key downKey = Key.S;
     protected Key spaceKey = Key.SPACE;
+    protected Key attackKey = Key.E;
 
     // if true, player cannot be hurt by enemies (good for testing)
     protected boolean isInvincible = false;
+    // added 11/19
+	protected PlayerAttack currentProjectile;
 
     public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
         super(spriteSheet, x, y, startingAnimationName);
@@ -68,6 +75,9 @@ public abstract class Player extends GameObject {
         playerState = PlayerState.STANDING;
         previousPlayerState = playerState;
         levelState = LevelState.RUNNING;
+        
+        // 11/19
+        currentProjectile = null;
     }
 
     public void update() {
@@ -127,6 +137,10 @@ public abstract class Player extends GameObject {
             case JUMPING:
                 playerJumping();
                 break;
+            // 11/19    
+            case ATTACKING:
+            	playerAttacking();
+            	break;
         }
     }
 
@@ -152,6 +166,14 @@ public abstract class Player extends GameObject {
         else if (Keyboard.isKeyDown(CROUCH_KEY) || Keyboard.isKeyDown(downKey)) {
             playerState = PlayerState.CROUCHING;
         }
+        
+        // 11/19
+        else if(Keyboard.isKeyDown(attackKey)) {
+        	
+        	//keyLocker.lockKey(attackKey);
+        	playerState = PlayerState.ATTACKING;
+        	//System.out.println(previousPlayerState.toString());
+        }
     }
 
     // player WALKING state logic
@@ -161,13 +183,15 @@ public abstract class Player extends GameObject {
 
         // if walk left key is pressed, move player to the left
         if (Keyboard.isKeyDown(MOVE_LEFT_KEY) || Keyboard.isKeyDown(leftKey)) {
+        	//System.out.println("s");
             moveAmountX -= walkSpeed;
             facingDirection = Direction.LEFT;
         }
 
         // if walk right key is pressed, move player to the right
         else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY) || Keyboard.isKeyDown(rightKey)) {
-            moveAmountX += walkSpeed;
+        	//System.out.println("d");
+        	moveAmountX += walkSpeed;
             facingDirection = Direction.RIGHT;
         } else if (Keyboard.isKeyUp(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY) && Keyboard.isKeyUp(rightKey) && Keyboard.isKeyUp(leftKey)) {
             playerState = PlayerState.STANDING;
@@ -178,12 +202,20 @@ public abstract class Player extends GameObject {
             keyLocker.lockKey(JUMP_KEY);
             keyLocker.lockKey(upKey);
             keyLocker.lockKey(spaceKey);
+            //System.out.println("w");
             playerState = PlayerState.JUMPING;
         }
 
         // if crouch key is pressed,
         else if (Keyboard.isKeyDown(CROUCH_KEY) || Keyboard.isKeyDown(downKey)) {
             playerState = PlayerState.CROUCHING;
+        }
+        
+        // 11/19
+        else if(Keyboard.isKeyDown(attackKey)) {
+        	keyLocker.lockKey(attackKey);
+        	playerState = PlayerState.ATTACKING;
+        	//System.out.println(previousPlayerState.toString());
         }
     }
 
@@ -259,7 +291,40 @@ public abstract class Player extends GameObject {
         // if player last frame was in air and this frame is now on ground, player enters STANDING state
         else if (previousAirGroundState == AirGroundState.AIR && airGroundState == AirGroundState.GROUND) {
             playerState = PlayerState.STANDING;
+            
         }
+    }
+    
+    // 11/19
+    public void playerAttacking() {
+    	if (playerState == PlayerState.ATTACKING) {
+                // define where projectile will spawn on map (x location) relative to cat's location
+                // and define its movement speed
+                int attackX;
+                float movementSpeed;
+                if (facingDirection == Direction.RIGHT) {
+                	attackX = Math.round(getX()) + getScaledWidth();
+                    movementSpeed = 1.5f;
+                } else {
+                	attackX = Math.round(getX());
+                    movementSpeed = -1.5f;
+                }
+
+                // define where projectile will spawn on the map (y location) relative to dinosaur enemy's location
+                int attackY = Math.round(getY()) + 4;
+
+                // create projectile
+                PlayerAttack projectile = new PlayerAttack(new Point(attackX, attackY), movementSpeed, 1000);
+                currentProjectile = projectile;
+
+                // add projectile enemy to the map for it to offically spawn in the level
+                map.addEnemy(projectile);
+                
+                //is key up
+                if (Keyboard.isKeyUp(attackKey)) {
+                	playerState = PlayerState.STANDING;
+                }
+            }
     }
 
     // while player is in air, this is called, and will increase momentumY by a set amount until player reaches terminal velocity
@@ -282,6 +347,10 @@ public abstract class Player extends GameObject {
             keyLocker.unlockKey(JUMP_KEY);
             keyLocker.unlockKey(upKey);
             keyLocker.unlockKey(spaceKey);
+        }
+        // 11/19
+        else if (Keyboard.isKeyUp(attackKey)) {
+        	keyLocker.unlockKey(attackKey);
         }
     }
 
@@ -401,6 +470,7 @@ public abstract class Player extends GameObject {
             }
         }
     }
+    
 
     public PlayerState getPlayerState() {
         return playerState;
@@ -428,5 +498,7 @@ public abstract class Player extends GameObject {
 
     public void addListener(PlayerListener listener) {
         listeners.add(listener);
-    }
+    } 
+    
+    
 }
