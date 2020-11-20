@@ -1,5 +1,7 @@
 package Engine;
 
+import java.awt.BorderLayout;
+
 import javax.swing.*;
 
 import Game.ScreenCoordinator;
@@ -11,16 +13,18 @@ import Game.ScreenCoordinator;
 public class GameWindow {
 	private JFrame gameWindow;
 	private GamePanel gamePanel;
-
+	
+	
+	
 
 	public GameWindow(ScreenCoordinator c1) {
 		gameWindow = new JFrame("Game");
-		gamePanel = new GamePanel(c1);
+		gamePanel = new GamePanel(c1,this);
 		gamePanel.setFocusable(true);
 		gamePanel.requestFocusInWindow();
 		gameWindow.setContentPane(gamePanel);
 		gameWindow.setResizable(false);
-		gameWindow.setSize(Config.GAME_WINDOW_WIDTH, Config.GAME_WINDOW_HEIGHT);
+		gameWindow.setSize(Config.WIDTH, Config.HEIGHT);
 		gameWindow.setLocationRelativeTo(null);
 		gameWindow.setVisible(true);
 		gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // it'd be nice if this actually worked more than 1/3rd of the time
@@ -39,6 +43,18 @@ public class GameWindow {
 		return gamePanel.getScreenManager();
 		
 	}
+
+	public void paintWindow() {
+		gameWindow.repaint();
+		gamePanel.repaint();
+		gameWindow.setSize(Config.WIDTH, Config.HEIGHT);
+		gameWindow.setLocationRelativeTo(null);
+		gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		
+	}
+	
+
 	
 	
 }

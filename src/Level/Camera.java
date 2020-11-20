@@ -1,5 +1,6 @@
 package Level;
 
+import Engine.Config;
 import Engine.GraphicsHandler;
 import Engine.ScreenManager;
 import GameObject.GameObject;
@@ -28,7 +29,7 @@ public class Camera extends Rectangle {
     private ArrayList<NPC> activeNPCs = new ArrayList<>();
 
     // determines how many tiles off screen an entity can be before it will be deemed inactive and not included in the update/draw cycles until it comes back in range
-    private final int UPDATE_OFF_SCREEN_RANGE = 4;
+    private final int UPDATE_OFF_SCREEN_RANGE = 10;
 
     public Camera(int startX, int startY, int tileWidth, int tileHeight, Map map) {
         super(startX, startY, ScreenManager.getScreenWidth() / tileWidth, ScreenManager.getScreenHeight() / tileHeight);
@@ -45,6 +46,7 @@ public class Camera extends Rectangle {
         int xIndex = Math.round(getX()) / tileWidth;
         int yIndex = Math.round(getY()) / tileHeight;
         return new Point(xIndex, yIndex);
+        
     }
 
     public void update(Player player) {
@@ -251,11 +253,15 @@ public class Camera extends Rectangle {
 
     // gets end bound X position of the camera (start position is always 0)
     public float getEndBoundX() {
-        return x + (width * tileWidth) + leftoverSpaceX;
+    	return x + (width * tileWidth) + leftoverSpaceX;
+        
     }
 
     // gets end bound Y position of the camera (start position is always 0)
     public float getEndBoundY() {
-        return y + (height * tileHeight) + leftoverSpaceY;
+ 
+    		return y + (height * tileHeight) + leftoverSpaceY;
+
+        
     }
 }

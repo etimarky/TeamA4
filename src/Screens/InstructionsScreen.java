@@ -56,6 +56,7 @@ public class InstructionsScreen extends Screen {
         }
     }
 
+    
     public void draw(GraphicsHandler graphicsHandler) {
         background.draw(graphicsHandler);
         instructions2Label.draw(graphicsHandler);

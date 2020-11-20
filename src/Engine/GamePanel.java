@@ -2,15 +2,18 @@ package Engine;
 
 import GameObject.Rectangle;
 
-import Screens.MenuScreen;
+
+
+
 import SpriteFont.SpriteFont;
 import Utils.Colors;
+import Utils.Stopwatch;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 //import sun.audio.AudioData;
-
+import javax.sound.sampled.FloatControl;
 import javax.swing.*;
 
 import Game.GameState;
@@ -29,35 +32,29 @@ public class GamePanel extends JPanel {
 	// loads Screens on to the JPanel
 	// each screen has its own update and draw methods defined to handle a "section"
 	// of the game.
+	protected KeyLocker keyLocker = new KeyLocker();
 	private ScreenManager screenManager;
-
 	// used to create the game loop and cycle between update and draw calls
 	private Timer timer;
-
 	// used to draw graphics to the panel
 	private GraphicsHandler graphicsHandler;
-
 	private boolean doPaint = false;
-	private boolean isGamePaused = false;
-	private SpriteFont pauseLabel;
-	private KeyLocker keyLocker = new KeyLocker();
-	private final Key pauseKey = Key.P;
-	private boolean isInstructions = false;
-	private SpriteFont instructionLabel;
-	private SpriteFont instruction2Label;
-	private SpriteFont instruction3Label;
-	private SpriteFont instruction4Label;
-	private SpriteFont returnInstructionLabel;
-	private final Key iKey = Key.X;
-	private ScreenCoordinator coordinator;
+	protected int pointerLocationX, pointerLocationY;	
+	protected Stopwatch keyTimer = new Stopwatch();
+	protected static GameWindow gameWindow;
+	private static ScreenCoordinator coordinator;
+	public static Clip clip;
 
+	
 	/*
 	 * The JPanel and various important class instances are setup here
 	 */
-	public GamePanel(ScreenCoordinator c1) {
+	public GamePanel(ScreenCoordinator c1,GameWindow gameWindow) {
 		super();
+		this.gameWindow = gameWindow;
 		this.setDoubleBuffered(true);
 
+		this.setSize(Config.WIDTH, Config.HEIGHT);
 		// attaches Keyboard class's keyListener to this JPanel
 		this.addKeyListener(Keyboard.getKeyListener());
 
@@ -65,36 +62,10 @@ public class GamePanel extends JPanel {
 
 		screenManager = new ScreenManager();
 		coordinator = c1;
-		pauseLabel = new SpriteFont("PAUSE", 365, 280, "Comic Sans", 24, Color.white);
-		pauseLabel.setOutlineColor(Color.black);
-		pauseLabel.setOutlineThickness(2.0f);
 
-		instructionLabel = new SpriteFont("To JUMP: UP arrow key, or 'W', or SPACEBAR", 130, 140, "Times New Roman", 20,
-				Color.white);
-		instruction2Label = new SpriteFont("To MOVE LEFT: LEFT arrow key, or 'A'", 130, 170, "Times New Roman", 20,
-				Color.white);
-		instruction3Label = new SpriteFont("To MOVE RIGHT: RIGHT arrow key, or 'D'", 130, 220, "Times New Roman", 20,
-				Color.white);
-		instruction4Label = new SpriteFont("To CROUCH: DOWN arrow key, or 'S'", 130, 260, "Times New Roman", 20,
-				Color.white);
-		returnInstructionLabel = new SpriteFont("Press X to return", 20, 560, "Times New Roman", 20, Color.white);
-		instructionLabel.setOutlineColor(Color.white);
-		instructionLabel.setOutlineThickness(2.0f);
-		instruction2Label.setOutlineColor(Color.white);
-		instruction2Label.setOutlineThickness(2.0f);
-		instruction3Label.setOutlineColor(Color.white);
-		instruction3Label.setOutlineThickness(2.0f);
-		instruction4Label.setOutlineColor(Color.white);
-		instruction4Label.setOutlineThickness(2.0f);
-		returnInstructionLabel.setOutlineColor(Color.white);
-		returnInstructionLabel.setOutlineThickness(2.0f);
+	
+		
 
-		// Every timer "tick" will call the update method as well as tell the JPanel to
-		// repaint
-		// Remember that repaint "schedules" a paint rather than carries it out
-		// immediately
-		// If the game is really laggy/slow, I would consider upping the FPS in the
-		// Config file.
 		timer = new Timer(1000 / Config.FPS, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				update();
@@ -104,6 +75,9 @@ public class GamePanel extends JPanel {
 		timer.setRepeats(true);
 	}
 
+	public static ScreenCoordinator getScreenCoordinator() {
+		return coordinator;
+	}
 	// this is called later after instantiation, and will initialize screenManager
 	// this had to be done outside of the constructor because it needed to know the
 	// JPanel's width and height, which aren't available in the constructor
@@ -113,34 +87,57 @@ public class GamePanel extends JPanel {
 		doPaint = true;
 
 	}
+	public static GameWindow getGameWindow() {
+		return gameWindow;
+	}
 	
-    
-
-	  public void music(String filepath) {
-		  
-		
-		  
-			try {
-				AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File(filepath));
-				Clip clip =AudioSystem.getClip();
-				clip.open(audioInput);
-				clip.start();
-				clip.loop(Clip.LOOP_CONTINUOUSLY);
+	public static void music(String filepath, double gain) {
+	
+		try {
+			AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File(filepath));
+			clip = AudioSystem.getClip();
+			clip.open(audioInput);
+			setVolume(gain);
+			clip.start();
+	
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
+			
 			
 
-				
-			} catch (Exception ex) {
-				System.out.println("No audio found!");
-				ex.printStackTrace();
-				
-			}
-			
+		} catch (Exception ex) {
+			System.out.println("No audio found!");
+			ex.printStackTrace();
+
 		}
+		
+	}
+	public static void setVolume(double gain) {
+		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
+		gainControl.setValue(dB);
+		
+	}
+
+	public static void setVolumeLow() {
+		
+		setVolume(.5);
+	}
+
+	public static void setVolumeMed() {
+		setVolume(1);
+		
+	}
+
+	public static void setVolumeHigh() {
+		setVolume(2);
+		
+	}
+
 	// this starts the timer (the game loop is started here
 	public void startGame() {
 		timer.start();
 
-		//music("src/Blossoming Inspiration Loop (online-audio-converter.com).wav");
+		music("src/Blossoming Inspiration Loop (online-audio-converter.com).wav",1);
 	}
 
 	public ScreenManager getScreenManager() {
@@ -148,58 +145,12 @@ public class GamePanel extends JPanel {
 	}
 
 	public void update() {
-
-		if (coordinator.getGameState() != GameState.MENU && coordinator.getGameState() != GameState.INSTRUCTIONS && coordinator.getGameState() != GameState.CREDITS && coordinator.getGameState() != GameState.LEVELSELECT) {
-			if (isInstructions == false) {
-				if (Keyboard.isKeyDown(pauseKey) && !keyLocker.isKeyLocked(pauseKey)) {
-
-					isGamePaused = !isGamePaused;
-					keyLocker.lockKey(pauseKey);
-				}
-
-				if (Keyboard.isKeyUp(pauseKey)) {
-					keyLocker.unlockKey(pauseKey);
-				}
-			}
-
-			if (isGamePaused == false) {
-				if (Keyboard.isKeyDown(iKey) && !keyLocker.isKeyLocked(iKey)) {
-					isInstructions = !isInstructions;
-					keyLocker.lockKey(iKey);
-				}
-
-				if (Keyboard.isKeyUp(iKey)) {
-					keyLocker.unlockKey(iKey);
-				}
-			}
-		}
-		if (!isInstructions && !isGamePaused) {
 			screenManager.update();
-		}
-
 	}
 
 	public void draw() {
 		screenManager.draw(graphicsHandler);
 
-		// if game is paused, draw pause gfx over Screen gfx
-		if (isGamePaused) {
-			pauseLabel.draw(graphicsHandler);
-			graphicsHandler.drawFilledRectangle(0, 0, ScreenManager.getScreenWidth(), ScreenManager.getScreenHeight(),
-					new Color(0, 0, 0, 100));
-		}
-
-		if (isInstructions) {
-
-			instructionLabel.draw(graphicsHandler);
-			instruction2Label.draw(graphicsHandler);
-			instruction3Label.draw(graphicsHandler);
-			instruction4Label.draw(graphicsHandler);
-			returnInstructionLabel.draw(graphicsHandler);
-
-			graphicsHandler.drawFilledRectangle(0, 0, ScreenManager.getScreenWidth(), ScreenManager.getScreenHeight(),
-					new Color(0, 0, 0, 100));
-		}
 
 	}
 
@@ -215,4 +166,7 @@ public class GamePanel extends JPanel {
 		}
 
 	}
+	
+	
+
 }

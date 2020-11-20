@@ -27,17 +27,15 @@ public class LevelSelectScreen extends Screen {
 	protected int pointerLocationX, pointerLocationY;
 	protected KeyLocker keyLocker = new KeyLocker();
 	protected PlayLevelScreen playLevelScreen;
-	
-	
+
 	public LevelSelectScreen(PlayLevelScreen screen) {
 		this.playLevelScreen = screen;
-		
+
 	}
 
 	@Override
 	public void initialize() {
-		
-		
+
 		levelOne = new SpriteFont("Level One", 200, 100, "Comic Sans", 30, new Color(49, 207, 240));
 		levelOne.setOutlineColor(Color.black);
 		levelOne.setOutlineThickness(3);
@@ -57,7 +55,7 @@ public class LevelSelectScreen extends Screen {
 		background = new LevelSelectMap();
 		background.setAdjustCamera(false);
 		keyTimer.setWaitTime(200);
-		
+
 		keyLocker.lockKey(Key.SPACE);
 	}
 
@@ -133,11 +131,11 @@ public class LevelSelectScreen extends Screen {
 			keyLocker.unlockKey(Key.SPACE);
 		}
 		if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
-			
-			//playLevelScreen.getPlayLevelScreenState();
+
+			// playLevelScreen.getPlayLevelScreenState();
 			if (LevelSelected == 0) {
 				playLevelScreen.setLevelNum(0);
-				
+
 				playLevelScreen.setPlayLevelScreenState(PlayLevelScreenState.RUNNING);
 				playLevelScreen.initialize();
 			} else if (LevelSelected == 1) {
@@ -158,15 +156,17 @@ public class LevelSelectScreen extends Screen {
 				playLevelScreen.initialize();
 			}
 		}
+
 	}
 
-	public  void draw(GraphicsHandler graphicsHandler) {
+	public void draw(GraphicsHandler graphicsHandler) {
 		background.draw(graphicsHandler);
 		levelOne.draw(graphicsHandler);
 		levelTwo.draw(graphicsHandler);
 		levelThree.draw(graphicsHandler);
 		levelFour.draw(graphicsHandler);
 		levelFive.draw(graphicsHandler);
+
 		graphicsHandler.drawFilledRectangleWithBorder(pointerLocationX, pointerLocationY, 20, 20,
 				new Color(49, 207, 240), Color.black, 2);
 	}

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class EditorControlPanel extends JPanel {
 
-    private ArrayList<String> mapNames;
+	private ArrayList<String> mapNames;
     private SelectedTileIndexHolder selectedTileIndexHolder;
     private JComboBox mapNamesComboBox;
     private TilePicker tilePicker;
