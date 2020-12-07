@@ -78,7 +78,7 @@ from the game.
 Here is what the game looks like:
 
 Menu Screen
-![menu-screen.png](../assets/images/menu-screen.png)
+![main-menu.PNG](../assets/images/main-menu.PNG)
 
 In Game Screens (the player character is the adorable cat!)
 ![game-screen-1.png](../assets/images/game-screen-1.png)
