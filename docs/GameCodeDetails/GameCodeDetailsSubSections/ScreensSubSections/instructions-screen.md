@@ -23,7 +23,7 @@ permalink: /GameCodeDetails/Screens/InstructionsScreen
 The screen handles the logic related to how to play the game. Many users were confused with the functionality
 of keys, so this screen will fix the confusion. Also, if the users click 'X' the instructions screen appears.
 
-![instructions-screen.png](../../../assets/images/instructions-screen.png)
+![instructions-screen.PNG](../../../assets/images/instructions-screen.PNG)
 
 The class file for it is `InstructionsScreen.java` which can be found in the `Screens` package.
 
