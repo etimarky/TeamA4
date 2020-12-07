@@ -116,6 +116,12 @@ public Cat(float x, float y, Map map) {
     MOVE_LEFT_KEY = Key.LEFT;
     MOVE_RIGHT_KEY = Key.RIGHT;
     CROUCH_KEY = Key.DOWN;
+    rightKey = Key.D;
+    leftKey = Key.A;
+    upKey = Key.W;
+    downKey = Key.S;
+    spaceKey = Key.SPACE;
+    attackKey = Key.E;
 }
 ```
 
@@ -140,6 +146,6 @@ that movement amount to the camera to show more of the map. This gives the appea
 
 Each `update` cycle, the `Player` class will do a few things:
 1. Apply gravity (downward force)
-1. Handle player state (more details on player state [here](./player-states.md))
-1. Update player animation and see if a switch is needed (`super.update()` does this)
-1. Move player by the amount it should be moved by based on the results of the handle player state step
+2. Handle player state (more details on player state [here](./player-states.md))
+3. Update player animation and see if a switch is needed (`super.update()` does this)
+4. Move player by the amount it should be moved by based on the results of the handle player state step
