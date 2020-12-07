@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Options Screen
-nav_order: 2
+nav_order: 6
 parent: Screens
 grand_parent: Game Code Details
 permalink: /GameCodeDetails/Screens/OptionsScreen
