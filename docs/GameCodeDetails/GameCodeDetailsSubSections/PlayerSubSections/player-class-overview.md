@@ -32,12 +32,16 @@ These are all float values, so decimal precision for movement is available.
 - **jumpHeight** - how high the player jumps
 - **jumpDegrade** - as the player is jumping upwards, less and less vertical velocity gets applied per cycle based on this value
 - **momentumYIncrease** - how much extra the player falls in addition to gravity while in the air
+- **momentumXIncrease** - how much momentum the player gains when moving on the x-axis (right or left)
 - **terminalVelocityY** - the fastest speed the player can fall before the fall speed gets "capped" (stops being able to increase)
+- **terminalVelocityX** - the fastest speed the player can move on the x-axis before their speed gets "capped" (stops being able to increase)
+- **momentumX** - defines player's current speed in the x-direction
+- **momentumY** - defines player's current speed in the y-direction
 
 Generally, `Player` subclasses will set those values as desired.
 
 The `Player` has several other important variables it uses to keep track of its current state:
-- **playerState** - based on the `PlayerState` enum in the `Level` package, a `Player` can be in a certain state which affects its game logic; currently, the supported states are `STANDING`, `WALKING`, `JUMPING`, `CROUCHING`
+- **playerState** - based on the `PlayerState` enum in the `Level` package, a `Player` can be in a certain state which affects its game logic; currently, the supported states are `STANDING`, `WALKING`, `JUMPING`, `CROUCHING`, `ATTACKING`
 - **facingDirection** - which direction the player is facing; can be either `LEFT` or `RIGHT`
 - **airGroundState** - if the player is currently on the ground `GROUND` or in the air `AIR` (what a horrible variable name, what was I thinking...)
 - **levelState** - allows the player to keep track of the current level state so it can track if it has beaten or has died in a level; more details on `LevelState` can be found in the `PlayLevelScreen` documentation [here](../ScreensSubSections/play-level-screen.md)
@@ -62,6 +66,9 @@ protected void handlePlayerState() {
             break;
         case JUMPING:
             playerJumping();
+            break;
+        case ATTACKING:
+            playerAttacking();
             break;
     }
 }
