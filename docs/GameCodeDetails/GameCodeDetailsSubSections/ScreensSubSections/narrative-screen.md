@@ -22,7 +22,7 @@ permalink: /GameCodeDetails/Screens/NarrativeScreen
 
 The screen handles the logic and graphics related to the screen that pops up when narrative is selected.
 
-![narrative-screen.png](../../../assets/images/narrative-screen.png)
+![narrative-screen.PNG](../../../assets/images/narrative-screen.PNG)
 
 The class file for it is `OpeningScreen.java` which can be found in the `Screens` package.
 
