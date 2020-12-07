@@ -103,3 +103,4 @@ lower to the ground to shrink its hurtbox, but that's all it does (and the playe
 
 ### Player Attacking State
 
+![ezgif.com-gif-maker.gif](../../../assets/images/ezgif.com-gif-maker.gif)
