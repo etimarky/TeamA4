@@ -28,6 +28,7 @@ The `PlayerState` enum in the `Level` package define the following states that t
 - **WALKING** -- player is walking
 - **JUMPING** -- player is jumping (or falling)
 - **CROUCHING** -- player is crouching
+- **ATTACKING** -- player is shooting lasers beams out of his eyes
 
 ## Player Standing State
 
@@ -99,3 +100,6 @@ the player uses either the `FALL_RIGHT` or `FALL_LEFT` animation.
 
 If the player is on the ground and presses the down arrow key, the player will enter its `CROUCHING` state. Basically, the player goes
 lower to the ground to shrink its hurtbox, but that's all it does (and the player cannot walk out of `CROUCHING` state, but they can jump out of it).
+
+### Player Attacking State
+
