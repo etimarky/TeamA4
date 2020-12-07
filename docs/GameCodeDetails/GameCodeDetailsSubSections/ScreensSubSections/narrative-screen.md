@@ -18,9 +18,9 @@ permalink: /GameCodeDetails/Screens/NarrativeScreen
 
 ---
 
-# Menu Screen
+# Narrative Screen
 
-The screen handles the logic and graphics related to the menu that is loaded upon the game starting up.
+The screen handles the logic and graphics related to the screen that pops up when narrative is selected.
 
 ![narrative-screen.png](../../../assets/images/narrative-screen.png)
 
