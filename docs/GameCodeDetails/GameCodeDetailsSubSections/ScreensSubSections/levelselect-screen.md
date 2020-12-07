@@ -22,7 +22,7 @@ permalink: /GameCodeDetails/Screens/LevelSelectScreen
 
 The screen handles the logic and graphics related to the screen that is loaded upon the user selecting level select.
 
-![levelselect-screen.png](../../../assets/images/levelselect-screen.png)
+![levelselect-screen.PNG](../../../assets/images/levelselect-screen.PNG)
 
 The class file for it is `LevelSelect.java` which can be found in the `Screens` package.
 
