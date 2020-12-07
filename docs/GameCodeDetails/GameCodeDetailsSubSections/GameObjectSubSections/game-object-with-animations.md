@@ -32,7 +32,7 @@ is the sprite sheet image file for the cat player character (the image file is `
 
 ![cat-spritesheet.png](../../../assets/images/cat-spritesheet.png)
 ![blueCat.png](../../../assets/images/blueCat.png)
-![greenCat.png](50,90)(../../../assets/images/greenCat.png)
+![greenCat.png](../../../assets/images/greenCat.png)
 
 Each sprite image on the sprite sheet must be the same size, and each image must have one pixel in between it and
 another image that would come next to or below it (to keep track of separate images, I drew black squares around each image, which also
