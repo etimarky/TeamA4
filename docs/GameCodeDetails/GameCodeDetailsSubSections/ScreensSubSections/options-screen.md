@@ -22,7 +22,7 @@ permalink: /GameCodeDetails/Screens/OptionsScreen
 
 The screen handles the logic and graphics related to the options screen that exists on the main menu.
 
-![option-screen.png](../../../assets/images/options-screen.png)
+![options-screen.PNG](../../../assets/images/options-screen.PNG)
 
 The class file for it is `OptionsScreen.java` which can be found in the `Screens` package.
 
