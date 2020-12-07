@@ -104,3 +104,5 @@ lower to the ground to shrink its hurtbox, but that's all it does (and the playe
 ### Player Attacking State
 
 ![ezgif.com-gif-maker.gif](../../../assets/images/ezgif.com-gif-maker.gif)
+
+If the player presses the 'E' key, the cat will enter its `ATTACKING` state and shoots a laser bolt out of its eyes. If the player holds down 'E', the cat shoots a continuous laser beam out of its eyes. Both attacks can be used to kill enemies. When the laser beam touches an enemy, the enemy dissappears.
